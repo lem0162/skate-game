@@ -498,9 +498,9 @@ button { touch-action: manipulation; }
   position: absolute;
   top: 50%; left: 50%;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 78px;
+  font-size: 46px;
   font-weight: 700;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   white-space: nowrap;
   --ox: 0px; --oy: 0px; --rot: 0deg;
   animation: callout-burst 2.3s cubic-bezier(.3,1.5,.5,1) forwards;
@@ -509,7 +509,7 @@ button { touch-action: manipulation; }
 .callout-sick   { color: #44cc77; }
 .callout-bail   { color: #ee4444; }
 .callout-info   { color: #f5c518; }
-.callout-letter { color: #ee4444; font-size: 140px; }
+.callout-letter { color: #ee4444; font-size: 100px; }
 @keyframes callout-burst {
   0%   { transform: translate(calc(-50% + var(--ox)), calc(-50% + var(--oy))) scale(.2) rotate(calc(var(--rot) - 20deg)); opacity: 0; }
   10%  { transform: translate(calc(-50% + var(--ox)), calc(-50% + var(--oy))) scale(1.5) rotate(calc(var(--rot) + 8deg)); opacity: 1; }

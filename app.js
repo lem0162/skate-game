@@ -131,8 +131,8 @@ function showCallout(text, type = 'info') {
   const el = document.createElement('div');
   el.className = `callout callout-${type}`;
   el.textContent = text;
-  el.style.setProperty('--ox',  ((Math.random() - .5) * 80) + 'px');
-  el.style.setProperty('--oy',  ((Math.random() - .5) * 60 - 20) + 'px');
+  el.style.setProperty('--ox',  ((Math.random() - .5) * 40) + 'px');
+  el.style.setProperty('--oy',  ((Math.random() - .5) * 40 - 10) + 'px');
   el.style.setProperty('--rot', ((Math.random() - .5) * 16) + 'deg');
   container.appendChild(el);
   setTimeout(() => el.remove(), 2400);
