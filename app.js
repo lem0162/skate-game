@@ -34,7 +34,6 @@ const TRICKS = [
   { id: 'suski',       name: 'Suski Grind',     cat: 'grind', base: .46 },
   // RAMPS (light transition tricks — coping & stalls, no big airs)
   { id: 'drop_in',     name: 'Drop In',         cat: 'ramp',  base: .95 },
-  { id: 'carve',       name: 'Carve',           cat: 'ramp',  base: .92 },
   { id: 'kickturn',    name: 'Kickturn',        cat: 'ramp',  base: .88 },
   { id: 'fakie_kt',    name: 'Fakie Kickturn',  cat: 'ramp',  base: .82 },
   { id: 'rock_fakie',  name: 'Rock to Fakie',   cat: 'ramp',  base: .78 },
@@ -55,14 +54,14 @@ const DEFAULT_POOLS = {
   easy: new Set([
     'ollie','pop_shove','bs180','fs180',
     '5050','boardslide','tailslide','noseslide',
-    'drop_in','carve','kickturn','fakie_kt','rock_fakie',
+    'drop_in','kickturn','fakie_kt','rock_fakie',
   ]),
   medium: new Set([
     'ollie','pop_shove','bs180','fs180',
     'kickflip','heelflip','varial_kick','varial_heel','bs_flip','fs_flip','360_shove',
     '5050','boardslide','tailslide','noseslide',
     'five_o','nosegrind','bluntslide','crook','feeble',
-    'drop_in','carve','kickturn','fakie_kt','rock_fakie',
+    'drop_in','kickturn','fakie_kt','rock_fakie',
     'tail_stall','nose_stall','5050_stall','rock_roll','axle_stall',
   ]),
   hard: new Set(TRICKS.map(t => t.id)),

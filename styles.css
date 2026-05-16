@@ -82,6 +82,36 @@ body.screen-game #event-log {
   max-height: 72px;
 }
 
+/* ── iPhone-fit: compact scoreboard so all 10 letters + VS fit in 358px ── */
+body.screen-game .scoreboard {
+  padding: 10px 10px;
+}
+body.screen-game .score-col { min-width: 0; }
+body.screen-game .score-name { font-size: 10px; margin-bottom: 6px; }
+body.screen-game .skate-letters { gap: 4px; }
+body.screen-game .letter {
+  width: 26px;
+  height: 32px;
+  font-size: 16px;
+  border-radius: 4px;
+}
+body.screen-game .vs-label { font-size: 16px; padding: 0 8px; }
+
+/* ── Tighter state box on phone ── */
+body.screen-game .state-box { padding: 14px 14px; min-height: 78px; }
+body.screen-game .trick-name { font-size: 36px; }
+body.screen-game .state-msg  { font-size: 13px; }
+
+/* ── Action buttons slightly more compact ── */
+body.screen-game .btn-land,
+body.screen-game .btn-bail,
+body.screen-game .btn-set { padding: 16px; font-size: 20px; }
+
+/* ── Trick picker tighter ── */
+body.screen-game .trick-btn { padding: 9px 10px; font-size: 12px; }
+body.screen-game .trick-cat-header { margin: 10px 0 6px; font-size: 10px; }
+body.screen-game .action-row { margin-bottom: 10px; }
+
 #app { width: 100%; max-width: 430px; min-width: 0; }
 
 /* ── TYPE ── */
