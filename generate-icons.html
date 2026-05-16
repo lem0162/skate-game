@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Generate SKATE Icons</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f0f0f;
+    color: #e8e8e8;
+    margin: 0;
+    padding: 32px;
+    min-height: 100vh;
+  }
+  h1 { color: #f5c518; margin: 0 0 8px; }
+  .sub { color: #888; margin-bottom: 32px; font-size: 14px; }
+  .icons { display: flex; flex-wrap: wrap; gap: 24px; }
+  .icon-box {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    min-width: 220px;
+  }
+  .icon-box canvas {
+    background: #000;
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+  }
+  .label { font-size: 13px; color: #aaa; margin: 12px 0 4px; }
+  .filename { font-family: monospace; color: #f5c518; font-size: 13px; margin-bottom: 12px; }
+  button {
+    background: #f5c518;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  button:hover { opacity: .9; }
+  .download-all {
+    margin-top: 24px;
+    background: #44cc77;
+    padding: 14px 28px;
+    font-size: 15px;
+  }
+  .note {
+    margin-top: 32px;
+    padding: 16px;
+    background: #1a1a1a;
+    border-left: 3px solid #f5c518;
+    font-size: 13px;
+    color: #aaa;
+    line-height: 1.6;
+    border-radius: 4px;
+  }
+  .note code { color: #f5c518; background: #000; padding: 2px 6px; border-radius: 3px; font-size: 12px; }
+</style>
+</head>
+<body>
+  <h1>SKATE Icon Generator</h1>
+  <p class="sub">Renders <code style="color:#f5c518">icon.svg</code> into the PNG sizes a PWA needs. Click each download button (or "Download All") and save them into the <code style="color:#f5c518">icons/</code> folder.</p>
+
+  <div class="icons" id="icons"></div>
+
+  <button class="download-all" id="all">Download All</button>
+
+  <div class="note">
+    <strong>What to do with the files:</strong><br>
+    Save each PNG into <code>skate-app/icons/</code> using the exact filename shown above each preview. The three required files are:
+    <ul style="margin: 10px 0 0 20px; padding: 0;">
+      <li><code>icons/icon-192.png</code> — Android home-screen icon</li>
+      <li><code>icons/icon-512.png</code> — Android splash & larger surfaces</li>
+      <li><code>icons/apple-touch-icon.png</code> — iOS home-screen icon (180×180)</li>
+    </ul>
+  </div>
+
+<script>
+const sizes = [
+  { size: 192, filename: 'icon-192.png' },
+  { size: 512, filename: 'icon-512.png' },
+  { size: 180, filename: 'apple-touch-icon.png' },
+];
+
+async function loadSVG() {
+  const res = await fetch('icon.svg');
+  return await res.text();
+}
+
+function svgToPng(svgText, size) {
+  return new Promise((resolve, reject) => {
+    const blob = new Blob([svgText], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, size, size);
+      URL.revokeObjectURL(url);
+      resolve(canvas);
+    };
+    img.onerror = reject;
+    img.src = url;
+  });
+}
+
+function downloadCanvas(canvas, filename) {
+  canvas.toBlob(blob => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 100);
+  }, 'image/png');
+}
+
+async function init() {
+  const svgText = await loadSVG();
+  const container = document.getElementById('icons');
+  const canvases = [];
+
+  for (const { size, filename } of sizes) {
+    const canvas = await svgToPng(svgText, size);
+    // Show at most 220px wide preview
+    canvas.style.maxWidth = Math.min(size, 200) + 'px';
+
+    const box = document.createElement('div');
+    box.className = 'icon-box';
+    box.innerHTML = `
+      <div class="label">${size}×${size}</div>
+      <div class="filename">icons/${filename}</div>
+    `;
+    box.appendChild(canvas);
+    const btn = document.createElement('button');
+    btn.textContent = 'Download';
+    btn.style.marginTop = '12px';
+    btn.onclick = () => downloadCanvas(canvas, filename);
+    box.appendChild(document.createElement('br'));
+    box.appendChild(btn);
+    container.appendChild(box);
+    canvases.push({ canvas, filename });
+  }
+
+  document.getElementById('all').onclick = () => {
+    canvases.forEach(({ canvas, filename }, i) => {
+      setTimeout(() => downloadCanvas(canvas, filename), i * 200);
+    });
+  };
+}
+
+init().catch(err => {
+  document.body.innerHTML = '<h1 style="color:#ee4444">Error</h1><p>Could not load icon.svg. Make sure you opened this page from a local web server (not file://), e.g. <code>npx serve</code> in this folder.</p><pre>' + err + '</pre>';
+});
+</script>
+</body>
+</html>

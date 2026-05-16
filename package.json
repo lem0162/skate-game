@@ -1,0 +1,9 @@
+{
+  "name": "skate",
+  "version": "1.0.0",
+  "description": "Play the game of SKATE against a bot.",
+  "scripts": {
+    "dev": "npx serve -l 5173 ."
+  },
+  "private": true
+}
