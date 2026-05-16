@@ -1,5 +1,10 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+  height: 100%;
+}
+
 :root {
   --bg: #0f0f0f;
   --surface: #1a1a1a;
@@ -21,19 +26,69 @@ body {
   font-family: 'Inter', sans-serif;
   background: var(--bg);
   color: var(--text);
+  overflow-x: hidden;
+  width: 100%;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Menu + gameover: vertically scrollable, centered */
+body:not(.screen-game) {
+  min-height: 100dvh;
   min-height: 100vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 24px 16px 60px;
+  padding: max(env(safe-area-inset-top), 24px) 16px max(env(safe-area-inset-bottom), 48px);
 }
-#app { width: 100%; max-width: 620px; }
+
+/* Game screen: fills viewport, only the trick list scrolls */
+body.screen-game {
+  height: 100dvh;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+body.screen-game #app {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: max(env(safe-area-inset-top), 8px) 16px max(env(safe-area-inset-bottom), 8px);
+}
+
+body.screen-game .scoreboard {
+  flex-shrink: 0;
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+body.screen-game .state-box {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+body.screen-game #game-content {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+}
+
+body.screen-game #event-log {
+  flex-shrink: 0;
+  max-height: 72px;
+}
+
+#app { width: 100%; max-width: 430px; min-width: 0; }
 
 /* ── TYPE ── */
 .title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 100px;
-  letter-spacing: 14px;
+  font-size: 82px;
+  letter-spacing: 12px;
   text-align: center;
   color: var(--accent);
   line-height: 1;
@@ -156,6 +211,7 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
 .trick-toggle input { accent-color: var(--accent); width: 13px; height: 13px; cursor: pointer; }
 
 /* ── PRIMARY BUTTON ── */
+button { touch-action: manipulation; }
 .btn-primary {
   width: 100%;
   padding: 18px;
@@ -250,11 +306,13 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
 }
 .trick-name {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 46px;
+  font-size: 42px;
   color: var(--accent);
   letter-spacing: 2px;
   line-height: 1;
   margin-bottom: 7px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .state-msg { font-size: 14px; color: var(--text-dim); line-height: 1.5; }
 .state-msg.ok  { color: var(--land); }
@@ -432,19 +490,19 @@ input[type=range] { flex: 1; accent-color: var(--accent); cursor: pointer; }
 
 /* Title slam on first menu load */
 @keyframes title-slam {
-  0%   { transform: translateY(-180px) scale(2); opacity: 0; letter-spacing: 60px; }
-  60%  { transform: translateY(20px)   scale(1.1); opacity: 1; letter-spacing: 14px; }
+  0%   { transform: translateY(-180px) scale(2); opacity: 0; letter-spacing: 50px; }
+  60%  { transform: translateY(20px)   scale(1.1); opacity: 1; letter-spacing: 12px; }
   80%  { transform: translateY(-6px)   scale(1); }
-  100% { transform: translateY(0)      scale(1); letter-spacing: 14px; }
+  100% { transform: translateY(0)      scale(1); letter-spacing: 12px; }
 }
-body.menu-first .title    { animation: title-slam .9s cubic-bezier(.4, 1.3, .5, 1); }
-body.menu-first .subtitle { animation: fade-up .8s .35s backwards; }
-body.menu-first .diff-btn { animation: fade-up .45s backwards; }
-body.menu-first .diff-btn:nth-child(1) { animation-delay: .45s; }
-body.menu-first .diff-btn:nth-child(2) { animation-delay: .55s; }
-body.menu-first .diff-btn:nth-child(3) { animation-delay: .65s; }
-body.menu-first .settings-panel { animation: fade-up .5s .8s backwards; }
-body.menu-first .btn-primary    { animation: fade-up .5s .95s backwards; }
+body:not(.screen-game).menu-first .title    { animation: title-slam .9s cubic-bezier(.4, 1.3, .5, 1); }
+body:not(.screen-game).menu-first .subtitle { animation: fade-up .8s .35s backwards; }
+body:not(.screen-game).menu-first .diff-btn { animation: fade-up .45s backwards; }
+body:not(.screen-game).menu-first .diff-btn:nth-child(1) { animation-delay: .45s; }
+body:not(.screen-game).menu-first .diff-btn:nth-child(2) { animation-delay: .55s; }
+body:not(.screen-game).menu-first .diff-btn:nth-child(3) { animation-delay: .65s; }
+body:not(.screen-game).menu-first .settings-panel { animation: fade-up .5s .8s backwards; }
+body:not(.screen-game).menu-first .btn-primary    { animation: fade-up .5s .95s backwards; }
 
 @keyframes fade-up {
   0%   { opacity: 0; transform: translateY(15px); }

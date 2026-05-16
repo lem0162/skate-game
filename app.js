@@ -311,6 +311,8 @@ function playerBail() {
 let gameInitialized = false;
 
 function render() {
+  document.body.classList.remove('screen-menu', 'screen-game', 'screen-gameover');
+  document.body.classList.add('screen-' + S.screen);
   const app = document.getElementById('app');
   if (S.screen === 'menu') {
     gameInitialized = false;
