@@ -32,14 +32,25 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Menu + gameover: vertically scrollable, centered */
-body:not(.screen-game) {
+/* Gameover: scrollable if needed */
+body.screen-gameover {
   min-height: 100dvh;
   min-height: 100vh;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   padding: max(env(safe-area-inset-top), 24px) 16px max(env(safe-area-inset-bottom), 48px);
+}
+
+/* Menu: fixed to viewport, vertically centered, no scroll */
+body.screen-menu {
+  height: 100dvh;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(env(safe-area-inset-top), 20px) 16px max(env(safe-area-inset-bottom), 20px);
 }
 
 /* Game screen: fills viewport, only the trick list scrolls */
@@ -130,7 +141,7 @@ body.screen-game .action-row { margin-bottom: 10px; }
   font-size: 12px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  margin-bottom: 44px;
+  margin-bottom: 28px;
 }
 .label {
   font-size: 11px;
