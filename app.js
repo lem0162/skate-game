@@ -317,6 +317,7 @@ function render() {
     gameInitialized = false;
     app.innerHTML = renderMenu();
     bindMenu();
+    document.body.classList.toggle('settings-open', S.settingsOpen);
   } else if (S.screen === 'game') {
     if (!gameInitialized) {
       app.innerHTML = renderGameShell();
@@ -431,7 +432,18 @@ function bindMenu() {
   );
 
   document.getElementById('settings-toggle').addEventListener('click', () => {
-    S.settingsOpen = !S.settingsOpen; render();
+    S.settingsOpen = !S.settingsOpen;
+    const isOpen = S.settingsOpen;
+    document.querySelector('.settings-body').classList.toggle('hidden', !isOpen);
+    document.querySelector('.settings-chevron').classList.toggle('open', isOpen);
+    document.body.classList.toggle('settings-open', isOpen);
+    if (isOpen) {
+      const title = document.querySelector('.title');
+      title.classList.remove('bump-up');
+      void title.offsetWidth;
+      title.classList.add('bump-up');
+      setTimeout(() => title.classList.remove('bump-up'), 600);
+    }
   });
 
   function updateRangeDisplay() {

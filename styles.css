@@ -53,6 +53,25 @@ body.screen-menu {
   padding: max(env(safe-area-inset-top), 20px) 16px max(env(safe-area-inset-bottom), 20px);
 }
 
+/* Settings open: switch to scrollable so the panel fits */
+body.screen-menu.settings-open {
+  height: auto;
+  min-height: 100dvh;
+  min-height: 100vh;
+  overflow-y: auto;
+  align-items: flex-start;
+}
+
+/* Title bump-up when settings expand */
+@keyframes title-bump-up {
+  0%   { transform: translateY(0)     scale(1); }
+  30%  { transform: translateY(-22px) scale(.96); }
+  55%  { transform: translateY(-8px)  scale(1.01); }
+  75%  { transform: translateY(-16px) scale(.99); }
+  100% { transform: translateY(0)     scale(1); }
+}
+.title.bump-up { animation: title-bump-up .52s cubic-bezier(.3, 1.4, .5, 1) both; }
+
 /* Game screen: fills viewport, only the trick list scrolls */
 body.screen-game {
   height: 100dvh;
