@@ -365,6 +365,7 @@ function renderMenu() {
         <span class="settings-chevron${S.settingsOpen?' open':''}">▼</span>
       </div>
       <div class="settings-body${S.settingsOpen?'':' hidden'}">
+       <div class="settings-body-inner">
         <div style="margin-top:4px;margin-bottom:20px">
           <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
             <span class="label" style="margin:0">Bot Accuracy</span>
@@ -391,6 +392,7 @@ function renderMenu() {
             font-size:12px; cursor:pointer; text-decoration:underline; padding:0;
           ">Reset to defaults</button>
         </div>
+       </div>
       </div>
     </div>
 
@@ -434,15 +436,26 @@ function bindMenu() {
   document.getElementById('settings-toggle').addEventListener('click', () => {
     S.settingsOpen = !S.settingsOpen;
     const isOpen = S.settingsOpen;
-    document.querySelector('.settings-body').classList.toggle('hidden', !isOpen);
+    const body  = document.querySelector('.settings-body');
+    const inner = document.querySelector('.settings-body-inner');
     document.querySelector('.settings-chevron').classList.toggle('open', isOpen);
     document.body.classList.toggle('settings-open', isOpen);
     if (isOpen) {
+      body.classList.remove('hidden');
+      // restart inner overshoot
+      if (inner) {
+        inner.classList.remove('drop-bounce');
+        void inner.offsetWidth;
+        inner.classList.add('drop-bounce');
+      }
+      // delayed, gentler title bounce — fires during the slingshot
       const title = document.querySelector('.title');
       title.classList.remove('bump-up');
       void title.offsetWidth;
       title.classList.add('bump-up');
-      setTimeout(() => title.classList.remove('bump-up'), 600);
+      setTimeout(() => title.classList.remove('bump-up'), 800);
+    } else {
+      body.classList.add('hidden');
     }
   });
 
